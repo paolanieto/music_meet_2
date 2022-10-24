@@ -1,0 +1,12 @@
+{% for event in events %}
+        <div>
+            {% if request.user == event.host %}
+            <a href="{% url 'update-event' event.id %}">Edit</a>
+            <a href="{% url 'delete-event' event.id %}">Delete</a>
+            {% endif %}
+            <a href="{% url 'user-profile' event.host.id %}">@{{event.host.username}}</a>
+            <h5>{{event.id}} -- <a href="{% url 'event' event.id %}">{{event.name}}</a></h5>
+            <small></small>
+            <hr>
+        </div>
+        {% endfor %}
