@@ -47,8 +47,8 @@ class Message(models.Model):
 
 class Musician(models.Model):
     # username, primary key, charfield,  max length of 60
-    user = models.ForeignKey(User, on_delete=models.CASCADE) #fk???
-
+    #uname = models.CharField(max_length = 60, primary_key = True) #fk???
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     # instruments, charfield, max length of 200
     instruments = models.CharField(max_length = 200)
 
@@ -63,3 +63,18 @@ class Musician(models.Model):
 
     #demo, url field, max lenght of 200, will be a url to the demo?
     demo = models.URLField(max_length = 200)
+
+
+class Group(models.Model):
+    #username, charfield, max length of 60, primary key
+    #uname = models.CharField(max_length = 60, primary_key = True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    #group name, charfield, max length of 60
+    group_name = models.CharField(max_length = 60)
+
+    #genre, charfield, max length of 30
+    genre = models.CharField(max_length = 30)
+
+    #location, charfield, max length of 30
+    location = models.CharField(max_length = 30)

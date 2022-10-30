@@ -6,8 +6,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Event, Topic, Message, Musician
-from .forms import EventForm
+from .models import Event, Topic, Message, Musician, Group
+from .forms import EventForm, UserForm, MusicianForm, GroupForm
 # Create your views here.
 
 #events = [
@@ -125,33 +125,123 @@ def userProfile(request, pk):
     return render(request, 'base/profile.html', context)
 
 @login_required(login_url='login')
+def createGroup(request):
+    form = GroupForm()
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+        Group.objects.create(
+            user=request.user,
+            group_name=request.POST.get('group_name'),
+            genre=request.POST.get('genre'),
+            location=request.POST.get('location')
+
+        )
+        return redirect('home')
+    context = {'form': form}
+    return render(request, 'base/create_group.html', context)
+
+@login_required(login_url='login')
+def updateGroup(request, pk):
+    group = Group.objects.get(id=pk)
+    form = GroupForm(instance=group)
+    if request.user != group.user:
+        return HttpResponse('You are not authorized here!!')
+
+    if request.method == 'POST':
+        
+        group.group_name = request.POST.get('group_name')
+        group.genre = request.POST.get('genre')
+        group.location = request.POST.get('location')
+        group.save()
+        return redirect('home')
+    context = {'form': form, 'group': group}
+    return render(request, 'base/create_group.html', context)
+
+@login_required(login_url='login')
+def createMusician(request):
+    form = MusicianForm()
+    if request.method == 'POST':
+        form = MusicianForm(request.POST)
+        #musician = form.save(commit=False)
+       # musician.user = request.user
+        Musician.objects.create(
+            user=request.user,
+            instruments=request.POST.get('instruments'),
+            genres=request.POST.get('genres'),
+            experience=request.POST.get('experience'),
+            location=request.POST.get('location'),
+            demo=request.POST.get('demo')
+        )
+        #if form.is_valid():
+            #musician = form.save(commit=False)
+            #musician.user = request.user
+            #musician.save()
+        return redirect('home')
+        #else:
+            #messages.error(request, 'an error occured during registation')
+    context = {'form': form}
+    return render(request, 'base/create_musician.html', context)
+
+@login_required(login_url='login')
+def updateMusician(request, pk):
+    musician = Musician.objects.get(id=pk)
+    form = MusicianForm(instance=musician)
+    if request.user != musician.user:
+        return HttpResponse('You are not authorized here!!')
+
+    if request.method == 'POST':
+        
+        musician.instruments = request.POST.get('instruments')
+        musician.genres = request.POST.get('genres')
+        musician.experience = request.POST.get('experience')
+        musician.location = request.POST.get('location')
+        musician.demo = request.POST.get('demo')
+        musician.save()
+        return redirect('home')
+    context = {'form': form, 'musician': musician}
+    return render(request, 'base/create_musician.html', context)
+
+@login_required(login_url='login')
 def createEvent(request):
     form = EventForm()
+    topics = Topic.objects.all()
     if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+
+        Event.objects.create(
+            host=request.user,
+            topic=topic,
+            name=request.POST.get('name'),
+            description=request.POST.get('description')
+        )
+       # form = EventForm(request.POST)
+       # if form.is_valid():
             # Step 2 in FixingEventForm 10_22_22
-            event = form.save(commit=False)
-            event.host = request.user
-            event.save()
-            return redirect('home')
-    context = {'form': form}
+           # event = form.save(commit=False)
+           # event.host = request.user
+           # event.save()
+        return redirect('home')
+    context = {'form': form, 'topics': topics}
     return render(request, 'base/event_form.html', context)
 
 @login_required(login_url='login')
 def updateEvent(request, pk):
     event = Event.objects.get(id=pk)
     form = EventForm(instance=event)
-
+    topics = Topic.objects.all()
     if request.user != event.host:
         return HttpResponse('You are not authorized here!!')
 
     if request.method == 'POST':
-        form = EventForm(request.POST, instance=event)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    context = {'form': form}
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        event.name = request.POST.get('name')
+        event.topic = topic
+        event.description = request.POST.get('description')
+        event.save()
+        return redirect('home')
+    context = {'form': form, 'event': event, 'topics': topics}
     return render(request, 'base/event_form.html', context)
 
 @login_required(login_url='login')
@@ -178,4 +268,16 @@ def deleteMessage(request, pk):
         message.delete()
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': message})
+
+@login_required(login_url='login')
+def updateUser(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+    return render(request, 'base/update_user.html', {'form': form})
 
