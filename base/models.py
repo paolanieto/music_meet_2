@@ -78,3 +78,21 @@ class Group(models.Model):
 
     #location, charfield, max length of 30
     location = models.CharField(max_length = 30)
+    
+
+class Contract(models.Model):
+    musician = models.ForeignKey(Musician, on_delete=models.CASCADE)
+    event = models.ForeignKey('Event', on_delete = models.CASCADE, null = True, blank = True)
+
+    #unique id for each contract
+    contract_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+
+    description = models.TextField(max_length = 500)
+
+    start_time = models.CharField(max_length = 10, default='TBD')
+    end_time = models.CharField(max_length = 10, default='TBD')
+    location = models.CharField(max_length =100, default='TBD')
+    pay = models.DecimalField(max_digits=7, decimal_places=2, default='15.00')
+
+    def __str__(self):
+         return self.musician.user.first_name + "'s Contract"
