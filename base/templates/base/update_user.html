@@ -20,8 +20,18 @@
                 </div>
                 <div class="layout__body">
                     <div style="text-align: center;">
+                        {% if request.user == musician.user %}
+                        <a class="btn btn--pill edit-user-button" href="{% url 'update-musician' musician.id %}">Edit Musician Profile</a>
+                        
+                        {% else %}
+                        
                         <a class="btn btn--pill edit-user-button" href="{% url 'create-musician' %}">Create Musician</a>
+                        {% endif %}
+                        {% if request.user == group.user %}
+                        <a class="btn btn--pill edit-user-button" href="{% url 'update-group' group.id %}">Edit Group Profile</a>
+                        {% else %}
                         <a class="btn btn--pill edit-user-button" href="{% url 'create-group' %}">Create Group</a>
+                        {% endif %}
                     </div>
                     <form class="form" action="" method="POST">
                       {% csrf_token %}

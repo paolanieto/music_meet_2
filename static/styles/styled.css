@@ -5,7 +5,7 @@
   --color-main-light: #dfca40;
   --color-dark: #2d67b8;
   --color-dark-medium: #040213b6;
-  --color-dark-light: #7a48e7;
+  --color-dark-light: #eb8c34;
   --color-light: #e5e5e5;
   --color-gray: #8b8b8b;
   --color-light-gray: #b2bdbd;
@@ -21,7 +21,7 @@
     "Helvetica Neue", sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; 
   text-rendering: optimizeLegibility;
   /* color: inherit; */
   font-size: inherit;
