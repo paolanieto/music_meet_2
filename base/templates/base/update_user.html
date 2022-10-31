@@ -19,6 +19,10 @@
                     </div>
                 </div>
                 <div class="layout__body">
+                    <div style="text-align: center;">
+                        <a class="btn btn--pill edit-user-button" href="{% url 'create-musician' %}">Create Musician</a>
+                        <a class="btn btn--pill edit-user-button" href="{% url 'create-group' %}">Create Group</a>
+                    </div>
                     <form class="form" action="" method="POST">
                       {% csrf_token %}
                       {% for field in form %}

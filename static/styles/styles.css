@@ -1163,3 +1163,35 @@ a {
   color: var(--color-main);
   font-weight: 1.4rem;
 }
+
+/* Login/Sign-up Page */
+
+.log-in-sign-up-label{
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+#log-in-sign-up{
+  background-color: var(--color-dark);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-top: 100px;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-bottom: 100px;
+  padding-bottom: 100px;
+}
+
+#tagline{
+  
+  color: white;
+  font-weight: 900;
+  font-size: 6rem;
+}
+
+/* Edit User */
+
+.edit-user-button{
+  position: relative;
+}
