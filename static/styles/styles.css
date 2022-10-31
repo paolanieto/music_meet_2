@@ -1184,7 +1184,7 @@ a {
 }
 
 #tagline{
-  
+  overflow-wrap: anywhere;
   color: white;
   font-weight: 900;
   font-size: 6rem;
