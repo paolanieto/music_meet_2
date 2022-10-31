@@ -3,22 +3,25 @@
 {% block content %}
 
 {% if page == 'login' %}
-<div>
+<div id="log-in-sign-up">
+    <p id="tagline">Log in to MusicMeet</p>
+
     <form method="POST" action="">
         {% csrf_token %}
 
-        <label>Username:</label>
+        <label class="log-in-sign-up-label">Username</label>
+        <br>
         <input type="text" name="username" placeholder="Enter Username" />
-
-        <label>Password:</label>
+        <br>
+        <label class="log-in-sign-up-label">Password</label>
+        <br>
         <input type="password" name="password" placeholder="Enter Password" />
-
-        <input type="submit" value="Login" />
+        <br><br>
+        <input type="submit" value="Log In" />
 
     </form> 
 
-    <p>haven't signed up yet?</p>
-    <a href="{% url 'register' %}">Sign up</a>
+    <p>New user? <a href="{% url 'register' %}">Sign up</a></p>
 </div>
 {% else %}
 <div>
@@ -29,7 +32,7 @@
 
     </form> 
     <p>Already signed up?</p>
-    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'login' %}">Log In</a>
 </div>
 {% endif %}
 
