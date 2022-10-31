@@ -1189,3 +1189,9 @@ a {
   font-weight: 900;
   font-size: 6rem;
 }
+
+/* Edit User */
+
+.edit-user-button{
+  position: relative;
+}
