@@ -24,6 +24,7 @@ def musician(request):
 # do not call this login() because there is a default function called login that we need
 def loginPage(request):
     page = 'login'
+    
     if request.user.is_authenticated:
         return redirect('home')
 
@@ -33,6 +34,7 @@ def loginPage(request):
 
         try:
             user = User.objects.get(username=username)
+            
         except:
             messages.error(request, 'User does not exist')
         
@@ -44,6 +46,8 @@ def loginPage(request):
             return redirect('home')
         else: 
             messages.error(request, 'Username or password does not exist')
+        
+    
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
