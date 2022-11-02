@@ -21,13 +21,13 @@
           <form class="form" action="" method="POST">
             {% csrf_token %}
             <div class="form__group">
-              <label for="room_name">User</label>
+              <label for="room_name">Please separate multiple genres or instruments with commas.</label>
               {{form.user}}
               <!--<input id="room_name" name="room_name" type="text" placeholder="E.g. Mastering Python + Django" />-->
             </div>
 
             <div class="form__group">
-              <label for="room_topic">Enter Genre(s)</label>
+              <label for="room_topic">Genre(s)</label>
               {{form.genres}}
               <!--<input required type="text" name="topic" value="{{form.genres}}" list="topic-list" />
               <datalist id="topic-list">
@@ -41,13 +41,13 @@
             </div>
             
             <div class="form__group">
-              <label for="room_name">Instruments</label>
+              <label for="room_name">Instrument(s)</label>
               {{form.instruments}}
               <!--<input id="room_name" name="room_name" type="text" placeholder="E.g. Mastering Python + Django" />-->
             </div>
 
             <div class="form__group">
-              <label for="room_description">Experience</label>
+              <label for="room_description">Years of Experience</label>
               {{form.experience}}
               <!--<input id="room_name" name="room_name" type="text" placeholder="E.g. Mastering Python + Django" />-->
             </div>
