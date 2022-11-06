@@ -20,4 +20,6 @@ urlpatterns = [
     path('update-musician/<str:pk>/', views.updateMusician, name="update-musician"),
     path('create-group/', views.createGroup, name="create-group"),
     path('update-group/<str:pk>/', views.updateGroup, name="update-group"),
+    path('topics/', views.topicsPage, name='topics'),
+    path('activity/', views.activityPage, name='activity'),
 ]

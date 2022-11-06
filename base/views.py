@@ -85,7 +85,7 @@ def home(request):
         Q(description__icontains=q)
         )
     
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[0:5]
     event_count = events.count()
     # Filtering down by the event topic name
     event_messages = Message.objects.filter(Q(event__topic__name__icontains=q))
@@ -304,4 +304,13 @@ def updateUser(request):
     
     context = {'form': form, 'musician': musician, 'group': group}
     return render(request, 'base/update_user.html', context)
+
+def topicsPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+    return render(request, 'base/topics.html', {'topics' : topics})
+
+def activityPage(request):
+    event_messages = Message.objects.all()
+    return render(request, 'base/activity.html', {'event_messages' : event_messages})
 
