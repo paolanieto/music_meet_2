@@ -14,14 +14,14 @@ class Topic(models.Model):
 
 
 class Event(models.Model):
-    event_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    event_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
 
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     # many to many relationship
-    participants = models.ManyToManyField(User, related_name='participants', blank=True)
+    participants = models.ManyToManyField(User, related_name = 'participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     instruments = models.CharField(max_length=20, blank = True, null = True)
@@ -34,7 +34,7 @@ class Event(models.Model):
 
 
 class Message(models.Model):
-    message_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    message_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # this is a one to many relationship
@@ -50,7 +50,7 @@ class Message(models.Model):
         return self.body[0:50]
 
 class Musician(models.Model):
-    musician_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    musician_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
 
     user = models.OneToOneField(User, on_delete=models.PROTECT, null=True, blank=True)
     # instruments, charfield, max length of 200
@@ -73,7 +73,7 @@ class Musician(models.Model):
 
 
 class Group(models.Model):
-    group_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    group_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
 
     user = models.OneToOneField(User, on_delete=models.PROTECT, null=True, blank=True)
 
@@ -87,14 +87,14 @@ class Group(models.Model):
     location = models.CharField(max_length = 30)
 
     #in case the group gets deleted the contract should still be in the database
-    events = models.ForeignKey(Event, on_delete = models.PROTECT)
+    events = models.ForeignKey(Event, on_delete = models.PROTECT, null = True, blank = True)
 
     def __str__(self):
         return self.group_name
     
 
 class Contract(models.Model):
-    contract_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    contract_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
 
     musician = models.ForeignKey(Musician, on_delete=models.PROTECT)
     event = models.ForeignKey('Event', on_delete = models.PROTECT, null = True, blank = True)
