@@ -3,11 +3,11 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
-from .models import Event, Topic, Message, Musician, Group
-from .forms import EventForm, UserForm, MusicianForm, GroupForm
+#from django.contrib.auth.forms import UserCreationForm
+from .models import Event, Topic, Message, Musician, Group, User
+from .forms import EventForm, UserForm, MusicianForm, GroupForm, MyUserCreationForm
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
@@ -57,10 +57,14 @@ def logoutUser(request):
 
 def registerPage(request):
     #page = 'register'
-    form = UserCreationForm()
+    form = MyUserCreationForm()
+    musicForm = MusicianForm()
+    groupForm = GroupForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
+        form = MyUserCreationForm(request.POST)
+        musicForm = MusicianForm(request.POST)
+        groupForm = GroupForm(request.POST)
+        if (form.is_valid() and (musicForm.is_valid() or groupForm.is_valid())):
             # commit is false because we need to access the user right away
             # if for some reason the user added and uppercase in their name or email
             # we want to make sure that that's lowercase automatically
@@ -68,12 +72,16 @@ def registerPage(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
+            if musicForm.is_valid():
+                musicForm.save()
+            if groupForm.is_valid():
+                groupForm.save()
             login(request, user)
             return redirect('home')
         else:
             messages.error(request, 'An error occurred during registration')
 
-    return render(request, 'base/login_register.html', {'form': form})
+    return render(request, 'base/login_register.html', {'form': form, 'musicForm': musicForm, 'groupForm': groupForm})
 
 def home(request):
     # this is how our search is extracted from what is passed to url
@@ -297,7 +305,7 @@ def updateUser(request):
 
     if request.method == 'POST':
         
-        form = UserForm(request.POST, instance=user)
+        form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk=user.id)

@@ -1,9 +1,9 @@
 {% extends 'main.html' %}
 
 {% block content %}
-    <main class="auth layout">
+    <main class="auth layout" onload="music()">
       {% if page == 'login' %}
-      <div class="container">
+      <div id="formContainer" class="container">
         <div class="layout__box">
           <div class="layout__boxHeader">
             <div class="layout__boxTitle">
@@ -77,6 +77,34 @@
                 {{field}}
               </div>
               {% endfor %}
+              <div>
+              
+              <input type="checkbox" name="groupcreate" id="gp" value="gcreate" onclick="group()">
+              <div id="groupForm">
+              <form class="form" action="" method="POST">
+                {% csrf_token %}
+                
+                {% for gfield in groupForm %}
+                <div class="form__group form__group">
+                  <label for="room_name">{{gfield.label}}</label>
+                  {{gfield}}
+                </div>
+                {% endfor %}
+              </div>
+              <input type="checkbox" name="groupcreate" id="gp" value="gcreate" onclick="music()">
+              <div id="musicForm">
+              <form class="form" action="" method="POST">
+                {% csrf_token %}
+                
+                {% for mfield in musicForm %}
+                <div class="form__group form__group">
+                  <label for="room_name">{{mfield.label}}</label>
+                  {{mfield}}
+                </div>
+                {% endfor %}
+              </div>
+                
+            </div>
 
               <button class="btn btn--main" type="submit">
                 <svg
@@ -108,5 +136,29 @@
       </div>
       {% endif %}
     </main>
+   
+    <script>
+      $(document).ready( function () {
+        
+        music();
+        group();
+      });
+      function music() {
+        var x = document.getElementById("musicForm");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+        }
+      function group() {
+        var x = document.getElementById("groupForm");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+    </script>
 {% endblock content %}
   
