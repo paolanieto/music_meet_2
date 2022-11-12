@@ -23,17 +23,14 @@ class Topic(models.Model):
 
 
 class Event(models.Model):
-    event_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
-
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     # many to many relationship
-    participants = models.ManyToManyField(User, related_name = 'participants', blank=True)
+    participants = models.ManyToManyField(User, related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    instruments = models.CharField(max_length=20, blank = True, null = True)
 
     class Meta:
         ordering = ['-updated', '-created']
@@ -43,8 +40,6 @@ class Event(models.Model):
 
 
 class Message(models.Model):
-    message_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # this is a one to many relationship
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
@@ -54,14 +49,16 @@ class Message(models.Model):
 
     class Meta:
         ordering = ['-updated', '-created']
+    
+
 
     def __str__(self):
         return self.body[0:50]
 
 class Musician(models.Model):
-    musician_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
-
-    user = models.OneToOneField(User, on_delete=models.PROTECT, null=True, blank=True)
+    # username, primary key, charfield,  max length of 60
+    #uname = models.CharField(max_length = 60, primary_key = True) #fk???
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     # instruments, charfield, max length of 200
     instruments = models.CharField(max_length = 200)
 
@@ -77,14 +74,11 @@ class Musician(models.Model):
     #demo, url field, max lenght of 200, will be a url to the demo?
     demo = models.URLField(max_length = 200)
 
-    def __str__(self):
-         return self.user.first_name + self.user.last_name
-
 
 class Group(models.Model):
-    group_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
-
-    user = models.OneToOneField(User, on_delete=models.PROTECT, null=True, blank=True)
+    #username, charfield, max length of 60, primary key
+    #uname = models.CharField(max_length = 60, primary_key = True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     #group name, charfield, max length of 60
     group_name = models.CharField(max_length = 60)
@@ -94,19 +88,14 @@ class Group(models.Model):
 
     #location, charfield, max length of 30
     location = models.CharField(max_length = 30)
-
-    #in case the group gets deleted the contract should still be in the database
-    events = models.ForeignKey(Event, on_delete = models.PROTECT, null = True, blank = True)
-
-    def __str__(self):
-        return self.group_name
     
 
 class Contract(models.Model):
-    contract_id = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
+    musician = models.ForeignKey(Musician, on_delete=models.CASCADE)
+    event = models.ForeignKey('Event', on_delete = models.CASCADE, null = True, blank = True)
 
-    musician = models.ForeignKey(Musician, on_delete=models.PROTECT)
-    event = models.ForeignKey('Event', on_delete = models.PROTECT, null = True, blank = True)
+    #unique id for each contract
+    contract_id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
 
     description = models.TextField(max_length = 500)
 
