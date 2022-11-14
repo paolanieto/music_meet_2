@@ -16,7 +16,7 @@
             <form class="form" method="POST" action="">
               {% csrf_token %}
               <div class="form__group form__group">
-                <label for="room_name">Username</label>
+                <label for="room_name">Email</label>  
                 <input id="username" name="username" type="text" placeholder="e.g. dennis_ivy" />
               </div>
               <div class="form__group">
@@ -65,19 +65,6 @@
               <h3>Register</h3>
             </div>
           </div>
-          <ul class="inline signup-category">
-            <li>
-                <label class="button button-large category" title="Select this category if you are a Musician and/or you are wishing to join a Band.">
-                    <input type="radio" name="r[category]" value="1" checked="checked" onclick="music()" />
-                    A Musician
-                </label>
-            </li>
-            <li>
-                <label class="button button-large category" title="Select this option if you are looking for certain type of Musicians to join your Band.">
-                    <input type="radio" name="r[category]" value="2" onclick="group()" />
-                    A Band
-                </label>
-            </li>
             
         </ul><br />
           <div class="layout__body">
