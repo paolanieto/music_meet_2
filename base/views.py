@@ -93,19 +93,35 @@ def registerPage(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
-    # this is how our search is extracted from what is passed to url
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # What this is is a query for our events
-    events = Event.objects.filter(
-        Q(topic__name__icontains=q) |
-        Q(name__icontains=q) |
-        Q(description__icontains=q)
+    try:
+        musician = request.user.musician
+        genre = musician.genres
+        instruments = musician.instruments
+
+        events = Event.objects.filter(
+            Q(topic__name__icontains=genre) |
+            Q(name__icontains=genre) |
+            Q(description__icontains=instruments) |
+            Q(instruments_needed__icontains=instruments)
         )
+
+    except AttributeError:
+        # this is how our search is extracted from what is passed to url
+        q = request.GET.get('q') if request.GET.get('q') != None else ''
+        # What this is is a query for our events
+        events = Event.objects.filter(
+            Q(topic__name__icontains=q) |
+            Q(name__icontains=q) |
+            Q(description__icontains=q)
+        )
+
+    
+    
     
     topics = Topic.objects.all()[0:5]
     event_count = events.count()
     # Filtering down by the event topic name
-    event_messages = Message.objects.filter(Q(event__topic__name__icontains=q))
+    event_messages = Message.objects.filter(Q(event__topic__name__icontains=''))
 
     context = {'events': events, 'topics': topics,
      'event_count': event_count, 'event_messages': event_messages}
