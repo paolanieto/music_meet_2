@@ -7,7 +7,7 @@ from .models import Event, Group, Musician, User
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['name', 'username', 'email', 'password1', 'password2']
+        fields = ['name', 'musician_Account', 'group_Account', 'username', 'email', 'password1', 'password2']
 
 class EventForm(ModelForm):
     class Meta:

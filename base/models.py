@@ -5,6 +5,8 @@ import uuid
 
 class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
+    musician_Account = models.BooleanField(default=False)
+    group_Account = models.BooleanField(default=False)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
 

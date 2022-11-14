@@ -58,30 +58,39 @@ def logoutUser(request):
 def registerPage(request):
     #page = 'register'
     form = MyUserCreationForm()
-    musicForm = MusicianForm()
-    groupForm = GroupForm()
+    #musicForm = MusicianForm()
+    #groupForm = GroupForm()
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
-        musicForm = MusicianForm(request.POST)
-        groupForm = GroupForm(request.POST)
-        if (form.is_valid() and (musicForm.is_valid() or groupForm.is_valid())):
+        #musicForm = MusicianForm(request.POST)
+        #groupForm = GroupForm(request.POST)
+        if form.is_valid(): #and (musicForm.is_valid() or groupForm.is_valid())):
             # commit is false because we need to access the user right away
             # if for some reason the user added and uppercase in their name or email
             # we want to make sure that that's lowercase automatically
             # we need to have access to be able to clean this data
             user = form.save(commit=False)
+            music_Account = user.musician_Account
+            group_Account = user.group_Account
             user.username = user.username.lower()
+
             user.save()
-            if musicForm.is_valid():
-                musicForm.save()
-            if groupForm.is_valid():
-                groupForm.save()
+            #if musicForm.is_valid():
+                #musicForm.save()
+            #if groupForm.is_valid():
+                #groupForm.save()
             login(request, user)
-            return redirect('home')
+            if music_Account:
+                return redirect('create-musician')
+            elif group_Account:
+                return redirect('create-group')
+            else:
+                return redirect('home')
+            #return redirect('home')
         else:
             messages.error(request, 'An error occurred during registration')
 
-    return render(request, 'base/login_register.html', {'form': form, 'musicForm': musicForm, 'groupForm': groupForm})
+    return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
     # this is how our search is extracted from what is passed to url
