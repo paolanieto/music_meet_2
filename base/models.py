@@ -4,7 +4,9 @@ from django.contrib.auth.models import AbstractUser
 import uuid
 
 class User(AbstractUser):
-    name = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=100, null=False)
+    first_name = models.CharField(max_length=200, null=True)
+    last_name = models.CharField(max_length=200, null=True)
     musician_Account = models.BooleanField(default=False)
     group_Account = models.BooleanField(default=False)
     email = models.EmailField(unique=True, null=True)
@@ -12,7 +14,7 @@ class User(AbstractUser):
 
     avatar = models.ImageField(null=True, default="avatar.svg")
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
 # Create your models here.
 # this is where we are going to create our database tables
