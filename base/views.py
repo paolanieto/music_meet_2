@@ -104,6 +104,7 @@ def home(request):
             Q(description__icontains=instruments) |
             Q(instruments_needed__icontains=instruments)
         )
+        event_messages = Message.objects.filter(Q(event__topic__name__icontains=genre))
 
     except AttributeError:
         # this is how our search is extracted from what is passed to url
@@ -114,6 +115,7 @@ def home(request):
             Q(name__icontains=q) |
             Q(description__icontains=q)
         )
+        event_messages = Message.objects.filter(Q(event__topic__name__icontains=q))
 
     
     
@@ -121,7 +123,7 @@ def home(request):
     topics = Topic.objects.all()[0:5]
     event_count = events.count()
     # Filtering down by the event topic name
-    event_messages = Message.objects.filter(Q(event__topic__name__icontains=''))
+    
 
     context = {'events': events, 'topics': topics,
      'event_count': event_count, 'event_messages': event_messages}
@@ -251,6 +253,7 @@ def createEvent(request):
             host=request.user,
             topic=topic,
             name=request.POST.get('name'),
+            instruments_needed=request.POST.get('instruments_needed'),
             description=request.POST.get('description')
         )
        # form = EventForm(request.POST)
