@@ -159,6 +159,8 @@ def userProfile(request, pk):
     events = user.event_set.all()
     event_messages = user.message_set.all()
     topics = Topic.objects.all()
+    if user.musician_Account:
+        musician = Musician.objects.get(user_id=pk)
     context = {'user': user, 'events': events, 'event_messages': event_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
