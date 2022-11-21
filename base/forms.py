@@ -7,7 +7,7 @@ from .models import Event, Group, Musician, User
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['name', 'musician_Account', 'group_Account', 'username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'musician_Account', 'group_Account', 'username', 'email', 'password1', 'password2']
 
 class EventForm(ModelForm):
     class Meta:
@@ -19,7 +19,7 @@ class EventForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['avatar','name','username', 'email', 'bio']
+        fields = ['avatar','first_name', 'last_name','username', 'email', 'bio']
 
 
 class GroupForm(ModelForm):

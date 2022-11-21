@@ -4,7 +4,9 @@ from django.contrib.auth.models import AbstractUser
 import uuid
 
 class User(AbstractUser):
-    name = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=100, null=False)
+    first_name = models.CharField(max_length=200, null=True)
+    last_name = models.CharField(max_length=200, null=True)
     musician_Account = models.BooleanField(default=False)
     group_Account = models.BooleanField(default=False)
     email = models.EmailField(unique=True, null=True)
@@ -29,6 +31,7 @@ class Event(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
+    flier = models.ImageField(null=True, default="flyer.png")
     instruments_needed = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     # many to many relationship

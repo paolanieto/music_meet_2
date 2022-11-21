@@ -161,6 +161,8 @@ def userProfile(request, pk):
     events = user.event_set.all()
     event_messages = user.message_set.all()
     topics = Topic.objects.all()
+    if user.musician_Account:
+        musician = Musician.objects.get(user_id=pk)
     context = {'user': user, 'events': events, 'event_messages': event_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
@@ -254,6 +256,7 @@ def createEvent(request):
             topic=topic,
             name=request.POST.get('name'),
             instruments_needed=request.POST.get('instruments_needed'),
+            flier=request.POST.get('flier'),
             description=request.POST.get('description')
         )
        # form = EventForm(request.POST)
@@ -278,6 +281,7 @@ def updateEvent(request, pk):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
         event.name = request.POST.get('name')
+        flier=request.POST.get('flier')
         event.topic = topic
         event.description = request.POST.get('description')
         event.save()
