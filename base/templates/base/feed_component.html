@@ -1,3 +1,4 @@
+{% load static %}
 {% for event in events %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">
@@ -13,7 +14,11 @@
     </div>
     <div class="roomListRoom__content">
       <a href="{% url 'event' event.id %}">@{{event.name}}</a>
-      <img src="{{event.flier.url}}" alt="sample flyer">
+      {% if event.flier %}
+        <img src="{{event.flier.url}}" alt="sample flyer">
+      {% else %}
+        <img src="{% static 'images/flyer.png' %}" alt="">
+      {% endif %}
     </div>
     <div class="roomListRoom__meta">
       <a href="{% url 'event' event.id %}" class="roomListRoom__joined">
