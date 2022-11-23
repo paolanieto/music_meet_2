@@ -2,13 +2,18 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 #from django.contrib.auth.models import User
 import uuid
-
+ACCOUNT_TYPES = (
+    ('M', 'Musician'),
+    ('G', 'Group'),
+)
 class User(AbstractUser):
+    
     username = models.CharField(max_length=100, null=False)
     first_name = models.CharField(max_length=200, null=True)
     last_name = models.CharField(max_length=200, null=True)
-    musician_Account = models.BooleanField(default=False)
-    group_Account = models.BooleanField(default=False)
+    account_type = models.CharField(default='M', max_length = 10, choices = ACCOUNT_TYPES, null=True, blank=True)
+    #musician_Account = models.BooleanField(default=False, null=True)
+    #group_Account = models.BooleanField(default=False, null=True)
     email = models.EmailField(unique=True, null=True)
     username = models.CharField(max_length=100)
     bio = models.TextField(null=True)

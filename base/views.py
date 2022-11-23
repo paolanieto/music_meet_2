@@ -57,6 +57,7 @@ def logoutUser(request):
 
 def registerPage(request):
     #page = 'register'
+    
     form = MyUserCreationForm()
     #musicForm = MusicianForm()
     #groupForm = GroupForm()
@@ -70,8 +71,9 @@ def registerPage(request):
             # we want to make sure that that's lowercase automatically
             # we need to have access to be able to clean this data
             user = form.save(commit=False)
-            music_Account = user.musician_Account
-            group_Account = user.group_Account
+            #music_Account = user.musician_Account
+            #group_Account = user.group_Account
+            account_type = user.account_type
             user.username = user.username.lower()
 
             user.save()
@@ -80,9 +82,9 @@ def registerPage(request):
             #if groupForm.is_valid():
                 #groupForm.save()
             login(request, user)
-            if music_Account:
+            if (account_type == 'M'):
                 return redirect('create-musician')
-            elif group_Account:
+            elif (account_type == 'G'):
                 return redirect('create-group')
             else:
                 return redirect('home')
@@ -202,6 +204,7 @@ def updateGroup(request, pk):
 @login_required(login_url='login')
 def createMusician(request):
     form = MusicianForm()
+
     if request.method == 'POST':
         form = MusicianForm(request.POST)
         #musician = form.save(commit=False)
@@ -214,11 +217,17 @@ def createMusician(request):
             location=request.POST.get('location'),
             demo=request.POST.get('demo')
         )
+        
+        user = request.user
+        
+        #group_Account = user.group_Account
         #if form.is_valid():
             #musician = form.save(commit=False)
             #musician.user = request.user
             #musician.save()
+       
         return redirect('home')
+        #return redirect('home')
         #else:
             #messages.error(request, 'an error occured during registation')
     context = {'form': form}
