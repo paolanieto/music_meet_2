@@ -6,7 +6,7 @@ from .models import Event, Group, Musician, User
 
 
 class MyUserCreationForm(UserCreationForm):
-    musician_Account = UserCreationForm.BooleanField(widget=UserCreationForm.Select(choices=(True, False)))
+    #musician_Account = UserCreationForm.BooleanField(widget=UserCreationForm.Select(choices=(True, False)))
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'musician_Account', 'group_Account', 'username', 'email', 'password1', 'password2']
