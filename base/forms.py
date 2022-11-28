@@ -14,9 +14,9 @@ class MyUserCreationForm(UserCreationForm):
 class EventForm(ModelForm):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['topic', 'name', 'flier', 'instruments_needed', 'description']
         # FixingEventForm 10_22_222
-        exclude = ['host', 'participants']
+        #exclude = ['host', 'participants']
 
 class UserForm(ModelForm):
     class Meta:

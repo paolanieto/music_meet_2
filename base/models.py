@@ -36,7 +36,7 @@ class Event(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
-    flier = models.ImageField(null=True, default="flyer.png")
+    flier = models.ImageField(null=True, blank=True, default="flyer.png")
     instruments_needed = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     # many to many relationship

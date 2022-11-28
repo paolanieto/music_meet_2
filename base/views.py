@@ -163,7 +163,7 @@ def userProfile(request, pk):
     events = user.event_set.all()
     event_messages = user.message_set.all()
     topics = Topic.objects.all()
-    if user.musician_Account:
+    if user.account_type=="M":
         musician = Musician.objects.get(user_id=pk)
     context = {'user': user, 'events': events, 'event_messages': event_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
@@ -254,6 +254,7 @@ def updateMusician(request, pk):
 
 @login_required(login_url='login')
 def createEvent(request):
+    user = request.user
     form = EventForm()
     topics = Topic.objects.all()
     if request.method == 'POST':
@@ -265,9 +266,10 @@ def createEvent(request):
             topic=topic,
             name=request.POST.get('name'),
             instruments_needed=request.POST.get('instruments_needed'),
-            flier=request.POST.get('flier'),
+            flier=request.FILES.get('flier'),
             description=request.POST.get('description')
         )
+        
        # form = EventForm(request.POST)
        # if form.is_valid():
             # Step 2 in FixingEventForm 10_22_22
@@ -290,9 +292,10 @@ def updateEvent(request, pk):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
         event.name = request.POST.get('name')
-        flier=request.POST.get('flier')
+        event.flier=request.POST.get('flier')
         event.topic = topic
         event.description = request.POST.get('description')
+        
         event.save()
         return redirect('home')
     context = {'form': form, 'event': event, 'topics': topics}
