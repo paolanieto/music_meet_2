@@ -22,4 +22,5 @@ urlpatterns = [
     path('update-group/<str:pk>/', views.updateGroup, name="update-group"),
     path('topics/', views.topicsPage, name='topics'),
     path('activity/', views.activityPage, name='activity'),
+    path('search-musicians/', views.searchMusician, name='search-musicians'),
 ]

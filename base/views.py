@@ -132,6 +132,32 @@ def home(request):
     return render(request, 'base/home.html', context)
 # later on pk will be used as the primary key to query the
 # database
+def searchMusician(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    musicians = Musician.objects.filter(
+        #User__matches=User.objects.get(first_name__icontains=q) |
+        #User__matches=User.objects.get(last_name__icontains=q) |
+        #Q(User__matches=User.objects.get(first_name__icontains=q)) |
+        #Q(User__matches=User.objects.get(last_name__icontains=q)) |
+        Q(instruments__icontains=q) |
+        Q(genres__icontains=q) |
+        Q(location__icontains=q)
+    )
+    users = User.objects.filter(
+        Q(first_name__icontains=q) |
+        Q(last_name__icontains=q)
+    ) 
+    for user in users:
+        userMusicians = Musician.objects.filter(
+            Q(user=user)
+        )
+        #for userMusician in userMusicians:
+        musicians |= userMusicians
+    
+
+    topics = Topic.objects.all()[0:5]
+    context = {'musicians': musicians, 'topics': topics}
+    return render(request, 'base/home.html', context)
 def event(request, pk):
     #event = None
     #for i in events:
@@ -292,7 +318,7 @@ def updateEvent(request, pk):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
         event.name = request.POST.get('name')
-        event.flier=request.POST.get('flier')
+        event.flier=request.FILES.get('flier')
         event.topic = topic
         event.description = request.POST.get('description')
         
