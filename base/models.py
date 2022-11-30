@@ -2,16 +2,18 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 #from django.contrib.auth.models import User
 import uuid
+
 ACCOUNT_TYPES = (
     ('M', 'Musician'),
     ('G', 'Group'),
 )
+
 class User(AbstractUser):
     
     username = models.CharField(max_length=100, null=False)
     first_name = models.CharField(max_length=200, null=True)
     last_name = models.CharField(max_length=200, null=True)
-    account_type = models.CharField(default='M', max_length = 10, choices = ACCOUNT_TYPES, null=True, blank=True)
+    account_type = models.CharField(default='M', max_length = 10, choices = ACCOUNT_TYPES)
     #musician_Account = models.BooleanField(default=False, null=True)
     #group_Account = models.BooleanField(default=False, null=True)
     email = models.EmailField(unique=True, null=True)
@@ -22,8 +24,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-# Create your models here.
-# this is where we are going to create our database tables
 
 class Topic(models.Model):
     name = models.CharField(max_length=200)
@@ -67,6 +67,14 @@ class Message(models.Model):
     def __str__(self):
         return self.body[0:50]
 
+    
+experience_choices = (
+    ('B','0-1'),
+    ('N','2-3'),
+    ('I','4-7'),
+    ('E','8+'),
+)
+
 class Musician(models.Model):
     # username, primary key, charfield,  max length of 60
     #uname = models.CharField(max_length = 60, primary_key = True) #fk???
@@ -75,16 +83,16 @@ class Musician(models.Model):
     instruments = models.CharField(max_length = 200)
 
     # genres, charfield, max length of 200
-    genres = models.CharField(max_length = 200)
+    genres = models.CharField(max_length = 20)
 
     # experience, floatfield, no max length?
-    experience = models.FloatField()
+    experience = models.CharField(default='B',max_length = 3, choices = experience_choices)
 
     #location, charField, max length of 50
     location = models.CharField(max_length = 50)
 
     #demo, url field, max lenght of 200, will be a url to the demo?
-    demo = models.URLField(max_length = 200)
+    demo = models.URLField(max_length = 200, null = True, blank = True)
 
 
 class Group(models.Model):
