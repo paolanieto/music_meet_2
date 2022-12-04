@@ -58,7 +58,7 @@
             </p>
           </div>
           <!-- If the current user is a musician, display their musician info -->
-          {% if user.musician_Account %}
+          {% if user.account_type == "M" %}
           <div class="profile__about">
             <h3>Instruments</h3>
             <p>
