@@ -108,6 +108,15 @@ def home(request):
         )
         event_messages = Message.objects.filter(Q(event__topic__name__icontains=genre))
 
+        q = request.GET.get('q') if request.GET.get('q') != None else ''
+        # What this is is a query for our events
+        events = Event.objects.filter(
+            Q(topic__name__icontains=q) |
+            Q(name__icontains=q) |
+            Q(description__icontains=q)
+        )
+        event_messages = Message.objects.filter(Q(event__topic__name__icontains=q))
+
     except AttributeError:
         # this is how our search is extracted from what is passed to url
         q = request.GET.get('q') if request.GET.get('q') != None else ''

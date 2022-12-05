@@ -69,10 +69,10 @@ class Message(models.Model):
 
     
 experience_choices = (
-    ('B','0-1'),
-    ('N','2-3'),
-    ('I','4-7'),
-    ('E','8+'),
+    ('One Year','0-1'),
+    ('Two To Three Years','2-3'),
+    ('Four To Seven Years','4-7'),
+    ('Eight Or More Years','8+'),
 )
 
 class Musician(models.Model):
@@ -83,10 +83,10 @@ class Musician(models.Model):
     instruments = models.CharField(max_length = 200)
 
     # genres, charfield, max length of 200
-    genres = models.CharField(max_length = 20)
+    genres = models.CharField(max_length = 200)
 
     # experience, floatfield, no max length?
-    experience = models.CharField(default='B',max_length = 3, choices = experience_choices)
+    experience = models.CharField(default='One Year',max_length = 19, choices = experience_choices)
 
     #location, charField, max length of 50
     location = models.CharField(max_length = 50)
