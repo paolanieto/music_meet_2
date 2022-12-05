@@ -135,7 +135,7 @@ def home(request):
                 Q(user=userM)
             )
         #for userMusician in userMusicians:
-        musicians |= userMusicians
+            musicians |= userMusicians
 
         groups = Group.objects.filter(
             Q(group_name__icontains=q) |
@@ -151,7 +151,7 @@ def home(request):
                 Q(user=userG)
             )
         
-        groups |= userGroups
+            groups |= userGroups
 
     except AttributeError:
         # this is how our search is extracted from what is passed to url
@@ -178,7 +178,7 @@ def home(request):
                 Q(user=userM)
             )
         #for userMusician in userMusicians:
-        musicians |= userMusicians
+            musicians |= userMusicians
 
         groups = Group.objects.filter(
             Q(group_name__icontains=q) |
@@ -193,7 +193,7 @@ def home(request):
             userGroups = Group.objects.filter(
                 Q(user=userG)
             )
-        groups |= userGroups
+            groups |= userGroups
 
 
     
