@@ -117,6 +117,42 @@ def home(request):
         )
         event_messages = Message.objects.filter(Q(event__topic__name__icontains=q))
 
+        musicians = Musician.objects.filter(
+        #User__matches=User.objects.get(first_name__icontains=q) |
+        #User__matches=User.objects.get(last_name__icontains=q) |
+        #Q(User__matches=User.objects.get(first_name__icontains=q)) |
+        #Q(User__matches=User.objects.get(last_name__icontains=q)) |
+            Q(instruments__icontains=q) |
+            Q(genres__icontains=q) |
+            Q(location__icontains=q)
+        )
+        usersM = User.objects.filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q)
+        ) 
+        for userM in usersM:
+            userMusicians = Musician.objects.filter(
+                Q(user=userM)
+            )
+        #for userMusician in userMusicians:
+        musicians |= userMusicians
+
+        groups = Group.objects.filter(
+            Q(group_name__icontains=q) |
+            Q(genre__icontains=q) |
+            Q(location__icontains=q)
+        )
+        usersG = User.objects.filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q)
+        )
+        for userG in usersG:
+            userGroups = Group.objects.filter(
+                Q(user=userG)
+            )
+        
+        groups |= userGroups
+
     except AttributeError:
         # this is how our search is extracted from what is passed to url
         q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -128,6 +164,38 @@ def home(request):
         )
         event_messages = Message.objects.filter(Q(event__topic__name__icontains=q))
 
+        musicians = Musician.objects.filter(
+            Q(instruments__icontains=q) |
+            Q(genres__icontains=q) |
+            Q(location__icontains=q)
+        )
+        usersM = User.objects.filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q)
+        )
+        for userM in usersM:
+            userMusicians = Musician.objects.filter(
+                Q(user=userM)
+            )
+        #for userMusician in userMusicians:
+        musicians |= userMusicians
+
+        groups = Group.objects.filter(
+            Q(group_name__icontains=q) |
+            Q(genre__icontains=q) |
+            Q(location__icontains=q)
+        )
+        usersG = User.objects.filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q)
+        )
+        for userG in usersG:
+            userGroups = Group.objects.filter(
+                Q(user=userG)
+            )
+        groups |= userGroups
+
+
     
     
     
@@ -136,7 +204,7 @@ def home(request):
     # Filtering down by the event topic name
     
 
-    context = {'events': events, 'topics': topics,
+    context = {'groups': groups, 'musicians': musicians, 'events': events, 'topics': topics,
      'event_count': event_count, 'event_messages': event_messages}
     return render(request, 'base/home.html', context)
 # later on pk will be used as the primary key to query the

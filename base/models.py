@@ -41,6 +41,7 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True)
     # many to many relationship
     participants = models.ManyToManyField(User, related_name='participants', blank=True)
+    occurring = models.DateField(null=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
