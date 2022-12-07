@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Event, Group, Musician, User
 #from django.contrib.auth.models import User
+from django.contrib.admin.widgets import  AdminDateWidget, AdminTimeWidget, AdminSplitDateTime
 
 
 class MyUserCreationForm(UserCreationForm):
@@ -11,10 +12,15 @@ class MyUserCreationForm(UserCreationForm):
         model = User
         fields = ['first_name', 'last_name', 'account_type', 'username', 'email', 'password1', 'password2']
 
-class EventForm(ModelForm):
+class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ['topic', 'name', 'flier', 'instruments_needed', 'description', 'occurring']
+        widgets = {
+           'occurring': forms.SelectDateWidget(),
+            #'occurring': AdminDateWidget()
+            #'time': forms.TimeInput(format='%H:%M'),
+        }
         # FixingEventForm 10_22_222
         #exclude = ['host', 'participants']
 

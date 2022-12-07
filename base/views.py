@@ -361,16 +361,21 @@ def createEvent(request):
     form = EventForm()
     topics = Topic.objects.all()
     if request.method == 'POST':
+        form = EventForm(request.POST)
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
-
+        #event=form.save(commit=False)
+        #occurring = form['occurring']
         Event.objects.create(
             host=request.user,
             topic=topic,
+            #occurring=occurring,
+            #time=request.POST.get('time'),
             name=request.POST.get('name'),
             instruments_needed=request.POST.get('instruments_needed'),
             flier=request.FILES.get('flier'),
-            description=request.POST.get('description')
+            description=request.POST.get('description'),
+            #occurring=form.cleaned_data['occurring'],
         )
         
        # form = EventForm(request.POST)
@@ -396,6 +401,7 @@ def updateEvent(request, pk):
         topic, created = Topic.objects.get_or_create(name=topic_name)
         event.name = request.POST.get('name')
         event.flier=request.FILES.get('flier')
+        event.occurring=request.POST.get('occurring')
         event.topic = topic
         event.description = request.POST.get('description')
         
