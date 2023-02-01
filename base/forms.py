@@ -17,8 +17,9 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = ['topic', 'name', 'flier', 'instruments_needed', 'description', 'occurring']
         widgets = {
-           'occurring': forms.DateInput(format = '%d.%m.%Y')#forms.SelectDateWidget(), 
-           
+            'occurring' : forms.SelectDateWidget(),
+           #'occurring': forms.DateInput()#forms.SelectDateWidget(), 
+           #'occuring': forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
             #'occurring': AdminDateWidget()
             #'time': forms.TimeInput(format='%H:%M'),
         }

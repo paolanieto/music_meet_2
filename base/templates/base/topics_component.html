@@ -6,11 +6,11 @@
 
 <div class="topics">
     <div class="topics__header">
-      <h2>Browse Topics</h2>
+      <h2>Browse Genres</h2>
     </div>
     <ul class="topics__list">
       <li>
-        <a href="{% url 'home' %}" class="active">All <span>{{topics.count}}</span></a>
+        <a href="{% url 'home' %}" class="active">All Genres<span>{{topics.count}}</span></a>
       </li>
       {% for topic in topics %}
       <li>
