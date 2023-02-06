@@ -378,7 +378,7 @@ def createEvent(request):
             instruments_needed=request.POST.get('instruments_needed'),
             flier=request.FILES.get('flier'),
             description=request.POST.get('description'),
-            #occurring=form.cleaned_data['occurring'],
+            occurring=request.POST('occurring'),
         )
         
        # form = EventForm(request.POST)
