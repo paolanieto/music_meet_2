@@ -8,7 +8,6 @@ ACCOUNT_TYPES = (
     ('M', 'Musician'),
     ('G', 'Group'),
 )
-
 class User(AbstractUser):
     
     username = models.CharField(max_length=100, null=False)
